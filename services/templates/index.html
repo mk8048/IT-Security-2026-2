@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello World | Security Lab</title>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #eef2f7; color: #17243a; font-family: system-ui, sans-serif; }
+    main { margin: 24px; padding: 32px; max-width: 560px; background: white; border-radius: 16px; box-shadow: 0 8px 32px #17243a12; }
+    h1 { font-size: clamp(2rem, 8vw, 3rem); margin: 12px 0; }
+    p { line-height: 1.7; }
+    a { color: #1754ba; }
+    small { color: #4a5870; }
+  </style>
+</head>
+<body>
+  <main data-service="{{ service }}">
+    <small>SECURITY LAB · {{ service }}</small>
+    <h1>Hello World!</h1>
+    <p>보안 팀 프로젝트 VM에 연결됐습니다.</p>
+    <p>Tailscale → Nginx → Gateway → Web</p>
+    <p><a href="/healthz">서비스 상태 확인</a></p>
+    <small>인프라 확인용 임시 페이지입니다. 로그인·성적관리·실제 WAF는 아직 구현되지 않았습니다.</small>
+  </main>
+</body>
+</html>

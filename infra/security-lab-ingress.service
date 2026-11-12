@@ -1,0 +1,14 @@
+[Unit]
+Description=Restrict security-lab Nginx forwarding to Tailscale
+Requires=docker.service
+After=docker.service tailscaled.service
+PartOf=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/security-lab-ingress start
+ExecStop=/usr/local/sbin/security-lab-ingress stop
+
+[Install]
+WantedBy=multi-user.target docker.service

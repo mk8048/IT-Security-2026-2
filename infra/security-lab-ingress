@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eu
+# Limit only this project's Nginx ingress; preserve SSH and all other rules.
+rule=(-d 172.29.240.2/32 -p tcp --dport 80 ! -i tailscale0 -m comment --comment security-lab-ingress -j DROP)
+case "${1:-}" in
+  start)
+    if ! iptables -w 5 -C DOCKER-USER "${rule[@]}" 2>/dev/null; then
+      iptables -w 5 -I DOCKER-USER 1 "${rule[@]}"
+    fi
+    ;;
+  stop)
+    if iptables -w 5 -C DOCKER-USER "${rule[@]}" 2>/dev/null; then
+      iptables -w 5 -D DOCKER-USER "${rule[@]}"
+    fi
+    ;;
+  *) echo 'Usage: security-lab-ingress start|stop' >&2; exit 2 ;;
+esac

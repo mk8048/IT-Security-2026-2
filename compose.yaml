@@ -1,0 +1,95 @@
+name: security-lab
+x-runtime: &runtime
+  restart: unless-stopped
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  read_only: true
+  tmpfs: ["/tmp:size=32m,mode=1777"]
+  logging:
+    driver: json-file
+    options: {max-size: 10m, max-file: "3"}
+x-app: &app
+  <<: *runtime
+  build:
+    context: .
+    dockerfile: services/Dockerfile
+  image: security-lab-python:stage1
+  healthcheck:
+    test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3)"]
+    interval: 10s
+    timeout: 5s
+    retries: 3
+    start_period: 10s
+services:
+  nginx:
+    <<: *runtime
+    image: nginx:stable-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311
+    cap_add: [CHOWN, SETUID, SETGID, NET_BIND_SERVICE]
+    ports: ["${HOST_BIND_IP:-127.0.0.1}:8080:80"]
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    tmpfs: ["/tmp:size=32m,mode=1777", /var/cache/nginx:size=32m, /var/run:size=1m]
+    networks:
+      frontnet: {ipv4_address: 172.29.240.2}
+    depends_on:
+      gateway: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1/healthz]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  gateway:
+    <<: *app
+    command: [gunicorn, --bind=172.29.240.3:8000, --workers=2, --timeout=20, --no-control-socket, --forwarded-allow-ips=, gateway:app]
+    environment:
+      GATEWAY_TARGET: ${GATEWAY_TARGET:-web}
+    volumes: [gateway-data:/data]
+    networks:
+      frontnet: {ipv4_address: 172.29.240.3}
+      appnet: {ipv4_address: 172.29.241.2}
+      honeynet: {ipv4_address: 172.29.242.2}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://172.29.240.3:8000/healthz', timeout=5)"]
+      interval: 10s
+      timeout: 7s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      web: {condition: service_healthy}
+      honeypot: {condition: service_healthy}
+  web:
+    <<: *app
+    environment: {SERVICE_NAME: web, TRUSTED_GATEWAY: 172.29.241.2}
+    volumes: [web-data:/data, web-files:/files]
+    networks:
+      appnet: {ipv4_address: 172.29.241.3}
+  honeypot:
+    <<: *app
+    environment: {SERVICE_NAME: honeypot, TRUSTED_GATEWAY: 172.29.242.2}
+    volumes: [honeypot-data:/data, honeypot-files:/files]
+    networks:
+      honeynet: {ipv4_address: 172.29.242.3}
+networks:
+  frontnet:
+    driver_opts: {com.docker.network.driver.mtu: "1442"}
+    ipam: {config: [{subnet: 172.29.240.0/24}]}
+  appnet:
+    driver_opts:
+      com.docker.network.driver.mtu: "1442"
+      com.docker.network.bridge.gateway_mode_ipv4: isolated
+    internal: true
+    ipam: {config: [{subnet: 172.29.241.0/24}]}
+  honeynet:
+    driver_opts:
+      com.docker.network.driver.mtu: "1442"
+      com.docker.network.bridge.gateway_mode_ipv4: isolated
+    internal: true
+    ipam: {config: [{subnet: 172.29.242.0/24}]}
+volumes:
+  web-data:
+  web-files:
+  honeypot-data:
+  honeypot-files:
+  gateway-data:
