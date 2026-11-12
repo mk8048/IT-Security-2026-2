@@ -7,6 +7,8 @@
 - [프로젝트 제안서](docs/proposal.md)
 - [설치·운영·이전 시 준비 사항](docs/runbook.md)
 - [실제 검증 결과와 미구현 항목](docs/infra-status.md)
+- [VM 이전 가이드](docs/vm-migration-guide.md)
+- [새 VM의 에이전트용 인계](handoff.md)
 
 새 VM에서는 운영 문서에 따라 Docker·Tailscale·호스트 진입 제한을 준비한 뒤 실행합니다.
 

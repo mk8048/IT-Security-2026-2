@@ -2,6 +2,7 @@
 
 프로젝트 루트: `/home/ubuntu/security-lab`.
 실제 상태와 검증 범위는 [infra-status.md](infra-status.md)를 참조한다.
+VM 변경 시에는 [VM 이전 가이드](vm-migration-guide.md)와 [에이전트 인계](../handoff.md)를 따른다. 소스 clone만으로 데이터와 호스트 설정이 이전되지는 않는다.
 현재 앱은 **인프라 임시 앱**이다. 로그인·성적·게시판·파일 다운로드·실제 WAF·자동 재공격 전환은 미구현이다.
 
 ## 접속
