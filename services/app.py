@@ -3,16 +3,14 @@ import sqlite3
 
 from flask import Flask, jsonify, render_template, request
 from audit import audit
+from db import init_db
 
 SERVICE = os.environ["SERVICE_NAME"]
 TRUSTED_GATEWAY = os.environ["TRUSTED_GATEWAY"]
 DB = "/data/app.sqlite3"
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
-with sqlite3.connect(DB) as db:
-    db.execute("CREATE TABLE IF NOT EXISTS infrastructure (service TEXT NOT NULL)")
-    if not db.execute("SELECT 1 FROM infrastructure").fetchone():
-        db.execute("INSERT INTO infrastructure VALUES (?)", (SERVICE,))
+init_db(SERVICE)
 
 
 @app.before_request
