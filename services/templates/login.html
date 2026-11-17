@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>로그인</title>
+<h2>로그인</h2>
+{% if error %}<pre style="color:#b00020">{{ error }}</pre>{% endif %}
+<form method="post" action="/login">
+  <input name="username" placeholder="아이디"><br>
+  <input name="password" type="password" placeholder="비밀번호"><br>
+  <button type="submit">로그인</button>
+</form>
+<p><a href="/signup">회원가입</a></p>

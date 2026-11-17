@@ -1,0 +1,12 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>회원가입</title>
+<h2>회원가입 (학생)</h2>
+{% if error %}<pre style="color:#b00020">{{ error }}</pre>{% endif %}
+<form method="post" action="/signup">
+  <input name="username" placeholder="아이디 (영문·숫자·_ 3~20자)" required><br>
+  <input name="password" type="password" placeholder="비밀번호 (4자 이상)" required><br>
+  <input name="name" placeholder="이름" required><br>
+  <button type="submit">가입</button>
+</form>
+<p><a href="/login">로그인으로 돌아가기</a></p>
