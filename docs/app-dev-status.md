@@ -67,10 +67,6 @@
 | Path Traversal (읽기) | `files.py` `file_download()` | `/files/download?name=../etc/passwd`, `../data/app.sqlite3`(평문 비밀번호 포함), `../app/auth.py` |
 | 업로드 취약점 | `files.py` `file_upload()`, `board.py` `board_write()` | 파일명·확장자 검증 없음, 덮어쓰기 허용, 경로 이탈(`../data/...`), `.html` 업로드 시 `text/html`로 응답(저장형 XSS), 설명·파일명이 INSERT에 그대로 이어붙음(SQLi) |
 
-![SQLi 재현 스크린샷](<스크린샷 2026-11-18 232834.png>)
-![저장형 XSS 재현 스크린샷](<스크린샷 2026-11-18 211033.png>)
-![Path Traversal 재현 스크린샷](<스크린샷 2026-11-18 214852.png>)
-
 ## 4. 구조와 설계 결정
 
 - 구성: `services/app.py`(조립) + `auth.py`, `grades.py`, `board.py`, `files.py`(Blueprint) + `db.py`(스키마·시드) + `templates/`.
