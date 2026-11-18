@@ -14,10 +14,5 @@
   {% endfor %}
 </table>
 
-<h3>글쓰기</h3>
-<form method="post" action="/board">
-  <input name="title" placeholder="제목" size="40"><br>
-  <textarea name="content" rows="6" cols="60" placeholder="내용"></textarea><br>
-  <button>등록</button>
-</form>
+<p><a href="/board/write">글쓰기</a></p>
 {% endblock %}

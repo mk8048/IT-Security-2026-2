@@ -13,5 +13,14 @@
   </tr>
   {% endfor %}
 </table>
-<a href="/board">게시판</a>
+
+{% if g.user.role in ('professor', 'admin') %}
+<h3>자료 등록</h3>
+<form method="post" action="/files" enctype="multipart/form-data">
+  <input type="file" name="file" required><br>
+  <input name="description" placeholder="설명" size="40"><br>
+  <button>등록</button>
+</form>
+{% endif %}
+<p><a href="/board">게시판</a></p>
 {% endblock %}

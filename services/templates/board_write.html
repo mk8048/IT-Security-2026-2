@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}글쓰기{% endblock %}
+{% block content %}
+<h2>글쓰기</h2>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+<form method="post" action="/board/write" enctype="multipart/form-data">
+  <input name="title" placeholder="제목" size="40" value="{{ title or '' }}"><br>
+  <textarea name="content" rows="8" cols="60" placeholder="내용">{{ content or '' }}</textarea><br>
+  <label>첨부파일 (선택): <input type="file" name="file"></label><br>
+  <button>등록</button>
+  <a href="/board">취소</a>
+</form>
+{% endblock %}
