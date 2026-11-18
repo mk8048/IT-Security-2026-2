@@ -7,6 +7,7 @@
 import sqlite3
 
 DB_PATH = "/data/app.sqlite3"
+FILES_DIR = "/files"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS infrastructure (
@@ -130,10 +131,30 @@ def seed(conn):
             "INSERT INTO grade_history (grade_id, changed_by, old_score, new_score) "
             "VALUES (?, ?, NULL, ?)", (cur.lastrowid, uid["prof1"], score))
 
-    conn.execute("INSERT INTO posts (author_id, title, content) VALUES (?, ?, ?)",
-                 (uid["prof1"], "공지", "중간고사 일정 안내입니다."))
     conn.execute("INSERT INTO files (filename, description, uploaded_by) VALUES (?, ?, ?)",
                  ("syllabus.txt", "강의계획서", uid["prof1"]))
+    conn.execute("INSERT INTO posts (author_id, title, content) VALUES (?, ?, ?)",
+             (uid["prof1"], "공지",
+              '중간고사 일정 안내입니다.<br>'
+              '<a href="/files/download?name=syllabus.txt">강의계획서 다운로드</a>'))
+
+
+# files 테이블 시드와 짝을 이루는 실습용 파일 (파일명 -> 내용). 모두 가상의 더미 내용이다.
+SEED_FILES = {
+    "syllabus.txt": "정보보호 및 보안 강의계획서 (실습용 더미 파일)\n"
+                    "- 과목코드: SEC101\n- 중간고사 일정은 게시판 공지를 참고하세요.\n",
+}
+
+
+def seed_files():
+    """실습용 파일을 /files 에 만든다. 이미 있는 파일은 덮어쓰지 않는다."""
+    for filename, content in SEED_FILES.items():
+        try:
+            # "x" 모드: 파일이 없을 때만 생성 (복원된 볼륨의 파일을 보존)
+            with open(f"{FILES_DIR}/{filename}", "x", encoding="utf-8") as f:
+                f.write(content)
+        except FileExistsError:
+            pass
 
 
 def init_db(service):
@@ -143,3 +164,4 @@ def init_db(service):
         if not conn.execute("SELECT 1 FROM infrastructure").fetchone():
             conn.execute("INSERT INTO infrastructure VALUES (?)", (service,))
         seed(conn)
+    seed_files()

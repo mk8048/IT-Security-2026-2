@@ -6,6 +6,7 @@ from audit import audit
 from auth import auth_bp
 from grades import grades_bp
 from board import board_bp
+from files import files_bp
 from db import init_db
 
 SERVICE = os.environ["SERVICE_NAME"] 
@@ -17,6 +18,7 @@ init_db(SERVICE)
 app.register_blueprint(auth_bp)
 app.register_blueprint(grades_bp)
 app.register_blueprint(board_bp)
+app.register_blueprint(files_bp)
 
 @app.before_request
 def trust_proxy():
