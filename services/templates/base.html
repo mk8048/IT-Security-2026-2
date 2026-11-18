@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}학사 포털{% endblock %}</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; background: #f6f7f9; }
+    nav { background: #1f3a5f; padding: 10px 20px; display: flex; gap: 16px; align-items: center; }
+    nav a, nav span { color: #fff; text-decoration: none; }
+    nav .spacer { flex: 1; }
+    nav form { margin: 0; }
+    main { max-width: 800px; margin: 24px auto; background: #fff; padding: 24px; border-radius: 6px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+    th { background: #eef1f5; }
+    .error { color: #b00020; white-space: pre-wrap; }
+    input, textarea { margin: 4px 0; }
+  </style>
+</head>
+<body>
+{% if g.user %}
+<nav>
+  <a href="/">홈</a>
+  {% if g.user.role == 'student' %}
+    <a href="/grades">내 성적</a>
+  {% elif g.user.role == 'professor' %}
+      <a href="/courses">성적관리</a>
+  {% endif %}
+  <a href="/board">게시판</a>
+  <a href="/files">자료실</a>
+  <span class="spacer"></span>
+  <span>{{ g.user.name }} ({{ g.user.role }})</span>
+  <form method="post" action="/logout"><button>로그아웃</button></form>
+</nav>
+{% endif %}
+<main>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ g.user.name }}님, 환영합니다</h2>
+<ul>
+  {% if g.user.role == 'student' %}
+    <li><a href="/grades">내 성적 확인</a></li>
+  {% elif g.user.role == 'professor' %}
+    <li><a href="/courses">성적 관리</a></li>
+  {% endif %}
+  <li><a href="/board">게시판</a></li>
+  <li><a href="/files">자료실</a></li>
+</ul>
+{% endblock %}

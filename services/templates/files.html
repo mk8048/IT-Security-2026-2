@@ -1,6 +1,6 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>자료실</title>
+{% extends "base.html" %}
+{% block title %}자료실{% endblock %}
+{% block content %}
 <h2>자료실</h2>
 <table border="1">
   <tr><th>번호</th><th>파일명</th><th>설명</th><th>등록자</th></tr>
@@ -14,4 +14,4 @@
   {% endfor %}
 </table>
 <a href="/board">게시판</a>
-<form method="post" action="/logout"><button>로그아웃</button></form>
+{% endblock %}

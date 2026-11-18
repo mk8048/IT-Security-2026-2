@@ -23,6 +23,13 @@ def my_grades():
     ).fetchall()
     return render_template("grades.html", rows=rows)
 
+# ---------- 교수: 담당 과목 목록 ----------
+@grades_bp.route("/courses")
+@role_required("professor")
+def course_index():
+    if not g.nav_courses:
+        return render_template("course_grades.html", course=None, rows=[])
+    return redirect(f"/courses/{g.nav_courses[0]['id']}/grades")
 
 # ---------- 교수: 담당 과목 성적 목록 ----------
 @grades_bp.route("/courses/<int:course_id>/grades")

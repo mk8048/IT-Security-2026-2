@@ -1,6 +1,6 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>회원가입</title>
+{% extends "base.html" %}
+{% block title %}회원가입{% endblock %}
+{% block content %}
 <h2>회원가입 (학생)</h2>
 {% if error %}<pre style="color:#b00020">{{ error }}</pre>{% endif %}
 <form method="post" action="/signup">
@@ -10,3 +10,4 @@
   <button type="submit">가입</button>
 </form>
 <p><a href="/login">로그인으로 돌아가기</a></p>
+{% endblock %}

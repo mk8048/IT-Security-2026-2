@@ -1,6 +1,6 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>{{ post.title }}</title>
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
 <h2>{{ post.title }}</h2>
 <p>{{ post.author }} · {{ post.created_at }}</p>
 <hr>
@@ -8,3 +8,4 @@
 <div>{{ post.content|safe }}</div>
 <hr>
 <a href="/board">목록</a>
+{% endblock %}

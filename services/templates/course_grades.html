@@ -1,6 +1,15 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>성적 관리</title>
+{% extends "base.html" %}
+{% block title %}성적 관리{% endblock %}
+{% block content %}
+{% if course %}
+<label>과목:
+  <select onchange="location.href='/courses/' + this.value + '/grades'">
+    {% for c in g.nav_courses %}
+      <option value="{{ c.id }}" {% if c.id == course.id %}selected{% endif %}>{{ c.code }} {{ c.title }}</option>
+    {% endfor %}
+  </select>
+</label>
+
 <h2>{{ course.code }} {{ course.title }}</h2>
 <table border="1">
   <tr><th>학번(ID)</th><th>이름</th><th>점수</th><th>수정일</th><th>수정</th></tr>
@@ -16,4 +25,7 @@
   </tr>
   {% endfor %}
 </table>
-<form method="post" action="/logout"><button>로그아웃</button></form>
+{% else %}
+<p>담당 과목이 없습니다.</p>
+{% endif %}
+{% endblock %}

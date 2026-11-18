@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, g, redirect
 from audit import audit
 from auth import auth_bp
 from grades import grades_bp
@@ -37,10 +37,9 @@ def log_response(response):
 
 @app.get("/")
 def index():
-    if SERVICE == "web":
-        return render_template("index.html", service=SERVICE)
-    return jsonify(service=SERVICE, stage="infrastructure_skeleton",
-                   message="Temporary app: authentication, grades and WAF are not implemented.")
+    if g.user is None:
+        return redirect("/login")
+    return render_template("home.html")
 
 
 @app.get("/healthz")

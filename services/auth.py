@@ -60,7 +60,8 @@ def load_user():
     if not token:
         return
     # 세션 검증은 매개변수 바인딩으로 안전하게 구현
-    g.user = get_db().execute(
+    conn = get_db()
+    g.user = conn.execute(
         """SELECT u.id, u.username, u.name, u.role
            FROM sessions s JOIN users u ON u.id = s.user_id
            WHERE s.token_hash = ?
@@ -68,6 +69,13 @@ def load_user():
              AND s.expires_at > ?""",
         (_hash(token), _now()),
     ).fetchone()
+
+    # 교수 메뉴용: 담당 과목 목록
+    if g.user is not None and g.user["role"] == "professor":
+        g.nav_courses = conn.execute(
+            "SELECT id, code, title FROM courses WHERE professor_id = ? ORDER BY code",
+            (g.user["id"],),
+        ).fetchall()
 
 
 # ---------- 데코레이터 ----------
