@@ -5,6 +5,7 @@ from flask import Flask, jsonify, render_template, request
 from audit import audit
 from auth import auth_bp
 from grades import grades_bp
+from board import board_bp
 from db import init_db
 
 SERVICE = os.environ["SERVICE_NAME"] 
@@ -15,6 +16,7 @@ app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
 init_db(SERVICE)
 app.register_blueprint(auth_bp)
 app.register_blueprint(grades_bp)
+app.register_blueprint(board_bp)
 
 @app.before_request
 def trust_proxy():

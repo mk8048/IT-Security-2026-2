@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>게시판</title>
+<h2>게시판</h2>
+<table border="1">
+  <tr><th>번호</th><th>제목</th><th>작성자</th><th>작성일</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td>{{ r.id }}</td>
+    <td><a href="/board/{{ r.id }}">{{ r.title }}</a></td>
+    <td>{{ r.author }}</td>
+    <td>{{ r.created_at }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>글쓰기</h3>
+<form method="post" action="/board">
+  <input name="title" placeholder="제목" size="40"><br>
+  <textarea name="content" rows="6" cols="60" placeholder="내용"></textarea><br>
+  <button>등록</button>
+</form>
+<form method="post" action="/logout"><button>로그아웃</button></form>
