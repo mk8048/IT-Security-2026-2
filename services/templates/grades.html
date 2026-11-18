@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>내 성적</title>
+<h2>내 성적</h2>
+<table border="1">
+  <tr><th>과목코드</th><th>과목명</th><th>점수</th><th>수정일</th></tr>
+  {% for r in rows %}
+  <tr><td>{{ r.code }}</td><td>{{ r.title }}</td><td>{{ r.score }}</td><td>{{ r.updated_at }}</td></tr>
+  {% endfor %}
+</table>
+<form method="post" action="/logout"><button>로그아웃</button></form>

@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>성적 관리</title>
+<h2>{{ course.code }} {{ course.title }}</h2>
+<table border="1">
+  <tr><th>학번(ID)</th><th>이름</th><th>점수</th><th>수정일</th><th>수정</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td>{{ r.username }}</td><td>{{ r.name }}</td><td>{{ r.score }}</td><td>{{ r.updated_at }}</td>
+    <td>
+      <form method="post" action="/grades/{{ r.id }}">
+        <input name="score" size="4">
+        <button>변경</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<form method="post" action="/logout"><button>로그아웃</button></form>
