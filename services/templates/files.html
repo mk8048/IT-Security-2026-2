@@ -22,5 +22,14 @@
   <button>등록</button>
 </form>
 {% endif %}
+<details>
+  <summary>Path Traversal·업로드 취약점 재현 가이드</summary>
+  <h4>Path Traversal</h4>
+  <p>주소창에 다음 경로 입력.</p>
+  <pre>/files/download?name=..%2F..%2Fapp%2Fauth.py</pre>
+  <h4>HTML 업로드 XSS</h4>
+  <p>교수 계정으로 <code>xss.html</code> 파일을 업로드하고 내용에 아래 스크립트 입력.</p>
+  <pre>&lt;script&gt;alert('해킹되었습니다')&lt;/script&gt;</pre>
+</details>
 <p><a href="/board">게시판</a></p>
 {% endblock %}

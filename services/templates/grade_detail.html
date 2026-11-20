@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}성적 상세{% endblock %}
+{% block content %}
+<h2>성적 상세</h2>
+<table border="1">
+  <tr><th>학생</th><th>아이디</th><th>과목코드</th><th>과목명</th><th>점수</th><th>수정일</th></tr>
+  <tr><td>{{ row.name }}</td><td>{{ row.username }}</td><td>{{ row.code }}</td><td>{{ row.title }}</td><td>{{ row.score }}</td><td>{{ row.updated_at }}</td></tr>
+</table>
+<details>
+  <summary>IDOR/BOLA 재현 가이드</summary>
+  <p>현재 URL의 성적 ID 숫자를 다른 성적 ID로 바꿔 다른 학생 성적 조회 시도.</p>
+  <p>성공 기준: 본인 소유가 아닌 학생의 이름과 성적 상세 화면 표시.</p>
+</details>
+<p><a href="/grades">내 성적</a></p>
+{% endblock %}

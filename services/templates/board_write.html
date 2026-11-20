@@ -10,4 +10,9 @@
   <button>등록</button>
   <a href="/board">취소</a>
 </form>
+<details>
+  <summary>저장형 XSS 재현 가이드</summary>
+  <p>본문에 아래 값을 입력하고 저장한 뒤 게시글을 다시 열람.</p>
+  <pre>&lt;script&gt;alert('해킹되었습니다')&lt;/script&gt;</pre>
+</details>
 {% endblock %}

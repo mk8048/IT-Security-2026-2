@@ -30,7 +30,8 @@
 | `/` | GET | 로그인 | 홈. 비로그인은 `/login`으로 이동 |
 | `/login`, `/signup` | GET/POST | 공개 | 가입은 **학생 역할로만** 생성(요청값으로 역할 지정 불가) |
 | `/logout` | POST | 로그인 | 세션 폐기 기록 |
-| `/grades` | GET | 학생 | 본인 성적만 조회 |
+| `/grades` | GET | 학생 | 본인 성적 목록 조회 |
+| `/grades/<id>` | GET | 학생 | 성적 상세 조회 (IDOR/BOLA 재현용) |
 | `/courses` | GET | 교수 | 담당 과목의 성적 화면으로 이동 |
 | `/courses/<id>/grades` | GET | 교수 | 담당 과목만 허용(아니면 403) |
 | `/grades/<id>` | POST | 교수 | 점수 수정, 변경 이력 기록 |
@@ -64,6 +65,7 @@
 | SQL Injection (인증 우회) | `auth.py` `login()` | 아이디 `admin'--`, 비밀번호 임의 → 관리자로 로그인. 오류 시 쿼리가 화면에 노출됨 |
 | SQL Injection (성적 변조) | `grades.py` `update_grade()` | 교수로 로그인 후 `score`에 `100 WHERE 1=1 --` → 전체 학생 점수 변경, `grade_history`에는 행마다 기록 |
 | 저장형 XSS | `post.html` | 게시글 본문에 `<script>alert(1)</script>` → 글을 여는 모든 사용자에게 실행. 제목·목록은 이스케이프됨 |
+| IDOR/BOLA | `grades.py` `grade_detail()` | 학생이 URL의 `grade_id`를 바꾸면 다른 학생 성적 상세 조회 |
 | Path Traversal (읽기) | `files.py` `file_download()` | `/files/download?name=../etc/passwd`, `../data/app.sqlite3`(평문 비밀번호 포함), `../app/auth.py` |
 | 업로드 취약점 | `files.py` `file_upload()`, `board.py` `board_write()` | 파일명·확장자 검증 없음, 덮어쓰기 허용, 경로 이탈(`../data/...`), `.html` 업로드 시 `text/html`로 응답(저장형 XSS), 설명·파일명이 INSERT에 그대로 이어붙음(SQLi) |
 

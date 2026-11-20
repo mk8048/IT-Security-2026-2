@@ -5,12 +5,36 @@
 {% if error %}<pre style="color:#b00020">{{ error }}</pre>{% endif %}
 {% if message %}<p style="color:#176b35">{{ message }}</p>{% endif %}
 <form method="post" action="/login">
-  <input name="username" placeholder="아이디"><br>
-  <input name="password" type="password" placeholder="비밀번호"><br>
+  <input id="username" name="username" placeholder="아이디"><br>
+  <input id="password" name="password" type="password" placeholder="비밀번호"><br>
   <button type="submit">로그인</button>
 </form>
+<details>
+  <summary>실습용 계정</summary>
+  <table border="1">
+    <tr><th>아이디</th><th>비밀번호</th><th>역할</th></tr>
+    <tr><td><button type="button" onclick="fillLogin('admin', 'admin-pass')">admin</button></td><td>admin-pass</td><td>관리자</td></tr>
+    <tr><td><button type="button" onclick="fillLogin('prof1', 'prof-pass')">prof1</button></td><td>prof-pass</td><td>교수</td></tr>
+    <tr><td><button type="button" onclick="fillLogin('stu1', 'stu1-pass')">stu1</button></td><td>stu1-pass</td><td>학생</td></tr>
+    <tr><td><button type="button" onclick="fillLogin('stu2', 'stu2-pass')">stu2</button></td><td>stu2-pass</td><td>학생</td></tr>
+  </table>
+  <small>모두 시연 전용 가상 계정입니다.</small>
+</details>
+<script>
+  function fillLogin(username, password) {
+    document.getElementById('username').value = username;
+    document.getElementById('password').value = password;
+  }
+</script>
 <p><a href="/signup">회원가입</a></p>
 <hr>
 <h3>실습 DB 복구</h3>
 <a href="/db/reset">DB 초기화 화면 열기</a>
+<details>
+  <summary>취약점 재현 가이드</summary>
+  <h4>SQL Injection 인증 우회</h4>
+  <p>아이디에 <code>admin'--</code>, 비밀번호에 임의 값을 입력한 뒤 로그인.</p>
+  <h4>SQL 오류 및 쿼리 노출</h4>
+  <p>아이디에 <code>'</code>, 비밀번호에 <code>x</code>를 입력한 뒤 로그인.</p>
+</details>
 {% endblock %}

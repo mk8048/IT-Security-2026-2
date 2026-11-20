@@ -28,4 +28,9 @@
 {% else %}
 <p>담당 과목이 없습니다.</p>
 {% endif %}
+<details>
+  <summary>성적 SQL Injection 재현 가이드</summary>
+  <p>교수 계정으로 특정 성적의 점수 입력란에 <code>100 WHERE 1=1 --</code> 입력 후 변경.</p>
+  <p>전체 학생 성적이 100점으로 변경되는지 확인.</p>
+</details>
 {% endblock %}

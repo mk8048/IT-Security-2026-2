@@ -3,9 +3,9 @@
 {% block content %}
 <h2>내 성적</h2>
 <table border="1">
-  <tr><th>과목코드</th><th>과목명</th><th>점수</th><th>수정일</th></tr>
+  <tr><th>과목코드</th><th>과목명</th><th>수정일</th><th>상세</th></tr>
   {% for r in rows %}
-  <tr><td>{{ r.code }}</td><td>{{ r.title }}</td><td>{{ r.score }}</td><td>{{ r.updated_at }}</td></tr>
+  <tr><td>{{ r.code }}</td><td>{{ r.title }}</td><td>{{ r.updated_at }}</td><td><a href="/grades/{{ r.id }}">보기</a></td></tr>
   {% endfor %}
 </table>
 {% endblock %}

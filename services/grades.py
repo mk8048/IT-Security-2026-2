@@ -23,6 +23,23 @@ def my_grades():
     ).fetchall()
     return render_template("grades.html", rows=rows)
 
+
+@grades_bp.route("/grades/<int:grade_id>")
+@role_required("student")
+def grade_detail(grade_id):
+    # [의도적 취약점] IDOR/BOLA: grade_id 소유자 확인 없이 성적 조회
+    row = get_db().execute(
+        """SELECT gr.id, u.username, u.name, c.code, c.title, gr.score, gr.updated_at
+           FROM grades gr
+           JOIN users u ON u.id = gr.student_id
+           JOIN courses c ON c.id = gr.course_id
+           WHERE gr.id = ?""",
+        (grade_id,),
+    ).fetchone()
+    if row is None:
+        abort(404)
+    return render_template("grade_detail.html", row=row)
+
 # ---------- 교수: 담당 과목 목록 ----------
 @grades_bp.route("/courses")
 @role_required("professor")
