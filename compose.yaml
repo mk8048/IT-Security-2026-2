@@ -61,7 +61,10 @@ services:
       honeypot: {condition: service_healthy}
   web:
     <<: *app
-    environment: {SERVICE_NAME: web, TRUSTED_GATEWAY: 172.29.241.2}
+    environment:
+      SERVICE_NAME: web
+      TRUSTED_GATEWAY: 172.29.241.2
+      DEMO_RESET_ENABLED: "${DEMO_RESET_ENABLED:-0}"
     volumes: [web-data:/data, web-files:/files]
     networks:
       appnet: {ipv4_address: 172.29.241.3}

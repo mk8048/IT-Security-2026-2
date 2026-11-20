@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}DB 초기화 확인{% endblock %}
+{% block content %}
+<h2>DB 초기화 확인</h2>
+<p>계정·성적·게시글·세션 데이터가 초기 시드 상태로 복구됩니다.</p>
+<p>업로드 파일은 보존됩니다.</p>
+<form method="post" action="/db/reset">
+  <button type="submit">정말 초기화</button>
+  <a href="/login">취소</a>
+</form>
+{% endblock %}

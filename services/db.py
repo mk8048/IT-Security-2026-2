@@ -165,3 +165,20 @@ def init_db(service):
             conn.execute("INSERT INTO infrastructure VALUES (?)", (service,))
         seed(conn)
     seed_files()
+
+
+def reset_db(service):
+    """실습용 DB를 초기 시드 상태로 되돌린다. /files는 보존한다."""
+    with connect() as conn:
+        conn.executescript("""
+        DROP TABLE IF EXISTS ip_blocks;
+        DROP TABLE IF EXISTS sessions;
+        DROP TABLE IF EXISTS files;
+        DROP TABLE IF EXISTS posts;
+        DROP TABLE IF EXISTS grade_history;
+        DROP TABLE IF EXISTS grades;
+        DROP TABLE IF EXISTS courses;
+        DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS infrastructure;
+        """)
+    init_db(service)

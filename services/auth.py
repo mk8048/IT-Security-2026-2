@@ -140,6 +140,21 @@ def login():
     return resp
 
 
+@auth_bp.route("/db/reset", methods=["POST"])
+def reset_database():
+    if os.environ.get("DEMO_RESET_ENABLED") != "1":
+        abort(404)
+    db.reset_db(os.environ["SERVICE_NAME"])
+    return render_template("login.html", message="DB를 초기 시드 상태로 복구했습니다."), 200
+
+
+@auth_bp.route("/db/reset", methods=["GET"])
+def reset_database_confirm():
+    if os.environ.get("DEMO_RESET_ENABLED") != "1":
+        abort(404)
+    return render_template("reset_confirm.html")
+
+
 # ---------- 회원가입 ----------
 USERNAME_RE = re.compile(r"[A-Za-z0-9_]{3,20}")
 
